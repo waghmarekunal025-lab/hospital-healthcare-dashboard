@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Hospital Healthcare Data Analysis Dashboard
+    </title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #222;
+        }
+
+        /* Header */
+
+        header {
+            background: #17365d;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 15px;
+        }
+
+        /* Main */
+
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 30px auto;
+        }
+
+        /* KPI Cards */
+
+        .kpi-container {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(200px, 1fr));
+
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 12px rgba(0,0,0,0.08);
+
+            text-align: center;
+        }
+
+        .card h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #555;
+        }
+
+        .card h2 {
+            font-size: 28px;
+            color: #17365d;
+        }
+
+        /* Charts */
+
+        .charts {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(400px, 1fr));
+
+            gap: 25px;
+        }
+
+        .chart-box {
+            background: white;
+            padding: 20px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .chart-box h2 {
+            margin-bottom: 15px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        canvas {
+            max-height: 350px;
+        }
+
+        /* Footer */
+
+        footer {
+            margin-top: 40px;
+            background: #17365d;
+            color: white;
+            text-align: center;
+            padding: 18px;
+        }
+
+        /* Mobile */
+
+        @media(max-width: 600px) {
+
+            .charts {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-box {
+                min-width: 0;
+            }
+
+            header h1 {
+                font-size: 22px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>
+        Hospital Healthcare Data Analysis Dashboard
+    </h1>
+
+    <p>
+        Data Science & Healthcare Analytics
+    </p>
+
+</header>
+
+
+<div class="container">
+
+    <!-- KPI SECTION -->
+
+    <div class="kpi-container">
+
+        <div class="card">
+
+            <h3>Total Patients</h3>
+
+            <h2 id="totalPatients">
+                --
+            </h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Total Treatment Cost</h3>
+
+            <h2 id="totalCost">
+                --
+            </h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Average Age</h3>
+
+            <h2 id="averageAge">
+                --
+            </h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Average Satisfaction</h3>
+
+            <h2 id="satisfaction">
+                --
+            </h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Inpatients</h3>
+
+            <h2 id="inpatients">
+                --
+            </h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Outpatients</h3>
+
+            <h2 id="outpatients">
+                --
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <!-- CHARTS -->
+
+    <div class="charts">
+
+
+        <!-- Department Chart -->
+
+        <div class="chart-box">
+
+            <h2>
+                Patients by Department
+            </h2>
+
+            <canvas id="departmentChart">
+            </canvas>
+
+        </div>
+
+
+        <!-- Monthly Chart -->
+
+        <div class="chart-box">
+
+            <h2>
+                Monthly Patient Trend
+            </h2>
+
+            <canvas id="monthlyChart">
+            </canvas>
+
+        </div>
+
+
+        <!-- Diagnosis Chart -->
+
+        <div class="chart-box">
+
+            <h2>
+                Diagnosis Distribution
+            </h2>
+
+            <canvas id="diagnosisChart">
+            </canvas>
+
+        </div>
+
+
+        <!-- Gender Chart -->
+
+        <div class="chart-box">
+
+            <h2>
+                Gender Distribution
+            </h2>
+
+            <canvas id="genderChart">
+            </canvas>
+
+        </div>
+
+
+        <!-- Treatment Cost -->
+
+        <div class="chart-box">
+
+            <h2>
+                Treatment Cost by Department
+            </h2>
+
+            <canvas id="costChart">
+            </canvas>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    Hospital Healthcare Data Analysis Dashboard
+    <br>
+
+    Data Science Activity Project -
+    VII Semester / Final Year
+
+</footer>
+
+
+<script>
+
+async function loadDashboard() {
+
+    try {
+
+        const response =
+            await fetch("/api/dashboard");
+
+        const data =
+            await response.json();
+
+
+        /* -------------------------
+           KPI DATA
+        ------------------------- */
+
+        document.getElementById(
+            "totalPatients"
+        ).innerText =
+            data.kpis.total_patients;
+
+
+        document.getElementById(
+            "totalCost"
+        ).innerText =
+            "₹" +
+            data.kpis.total_treatment_cost
+                .toLocaleString();
+
+
+        document.getElementById(
+            "averageAge"
+        ).innerText =
+            data.kpis.average_age +
+            " years";
+
+
+        document.getElementById(
+            "satisfaction"
+        ).innerText =
+            data.kpis.average_satisfaction +
+            " / 5";
+
+
+        document.getElementById(
+            "inpatients"
+        ).innerText =
+            data.kpis.inpatient_count;
+
+
+        document.getElementById(
+            "outpatients"
+        ).innerText =
+            data.kpis.outpatient_count;
+
+
+        /* -------------------------
+           Department Chart
+        ------------------------- */
+
+        new Chart(
+            document.getElementById(
+                "departmentChart"
+            ),
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels:
+                        data.department.map(
+                            item =>
+                                item.Department
+                        ),
+
+                    datasets: [{
+
+                        label:
+                            "Patients",
+
+                        data:
+                            data.department.map(
+                                item =>
+                                    item.Patients
+                            )
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        /* -------------------------
+           Monthly Chart
+        ------------------------- */
+
+        new Chart(
+            document.getElementById(
+                "monthlyChart"
+            ),
+            {
+
+                type: "line",
+
+                data: {
+
+                    labels:
+                        data.monthly.map(
+                            item =>
+                                item.Month
+                        ),
+
+                    datasets: [{
+
+                        label:
+                            "Patients",
+
+                        data:
+                            data.monthly.map(
+                                item =>
+                                    item.Patients
+                            ),
+
+                        tension: 0.3,
+
+                        fill: false
+
+                    }]
+
+                }
+
+            }
+        );
+
+
+        /* -------------------------
+           Diagnosis Chart
+        ------------------------- */
+
+        new Chart(
+            document.getElementById(
+                "diagnosisChart"
+            ),
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels:
+                        data.diagnosis.map(
+                            item =>
+                                item.Diagnosis
+                        ),
+
+                    datasets: [{
+
+                        label:
+                            "Patients",
+
+                        data:
+                            data.diagnosis.map(
+                                item =>
+                                    item.Patients
+                            )
+
+                    }]
+
+                },
+
+                options: {
+
+                    indexAxis: "y",
+
+                    responsive: true,
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        /* -------------------------
+           Gender Chart
+        ------------------------- */
+
+        new Chart(
+            document.getElementById(
+                "genderChart"
+            ),
+            {
+
+                type: "pie",
+
+                data: {
+
+                    labels:
+                        data.gender.map(
+                            item =>
+                                item.Gender
+                        ),
+
+                    datasets: [{
+
+                        data:
+                            data.gender.map(
+                                item =>
+                                    item.Patients
+                            )
+
+                    }]
+
+                }
+
+            }
+        );
+
+
+        /* -------------------------
+           Cost Chart
+        ------------------------- */
+
+        new Chart(
+            document.getElementById(
+                "costChart"
+            ),
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels:
+                        data.cost.map(
+                            item =>
+                                item.Department
+                        ),
+
+                    datasets: [{
+
+                        label:
+                            "Treatment Cost",
+
+                        data:
+                            data.cost.map(
+                                item =>
+                                    item[
+                                        "Treatment Cost"
+                                    ]
+                            )
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Dashboard Error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* Load dashboard */
+
+loadDashboard();
+
+</script>
+
+
+</body>
+
+</html>

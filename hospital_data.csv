@@ -1,0 +1,37 @@
+Patient ID,Date,Age,Gender,Department,Diagnosis,Visit Type,Treatment Cost,Satisfaction
+P001,2026-01-05,25,Male,Cardiology,Hypertension,Outpatient,4500,4
+P002,2026-01-08,42,Female,Neurology,Migraine,Outpatient,3200,5
+P003,2026-01-12,58,Male,Orthopedics,Arthritis,Inpatient,8500,4
+P004,2026-01-15,35,Female,Pediatrics,Fever,Outpatient,1800,4
+P005,2026-01-20,67,Male,Cardiology,Heart Disease,Inpatient,15000,3
+P006,2026-01-25,29,Female,Dermatology,Skin Allergy,Outpatient,2500,5
+P007,2026-02-03,51,Male,Neurology,Stroke,Inpatient,12000,3
+P008,2026-02-07,19,Female,Pediatrics,Fever,Outpatient,1500,5
+P009,2026-02-10,45,Male,Orthopedics,Fracture,Inpatient,11000,4
+P010,2026-02-14,38,Female,Cardiology,Hypertension,Outpatient,4200,4
+P011,2026-02-18,62,Male,Neurology,Parkinsons,Inpatient,13500,3
+P012,2026-02-22,31,Female,Dermatology,Acne,Outpatient,2200,5
+P013,2026-03-02,55,Male,Cardiology,Heart Disease,Inpatient,14500,4
+P014,2026-03-06,27,Female,Pediatrics,Fever,Outpatient,1600,5
+P015,2026-03-10,48,Male,Orthopedics,Arthritis,Outpatient,5000,4
+P016,2026-03-15,36,Female,Neurology,Migraine,Outpatient,3000,4
+P017,2026-03-20,70,Male,Cardiology,Heart Disease,Inpatient,16000,3
+P018,2026-03-25,22,Female,Dermatology,Skin Allergy,Outpatient,2400,5
+P019,2026-04-03,44,Male,Orthopedics,Fracture,Inpatient,10500,4
+P020,2026-04-07,33,Female,Pediatrics,Fever,Outpatient,1700,5
+P021,2026-04-12,59,Male,Neurology,Stroke,Inpatient,12500,3
+P022,2026-04-17,41,Female,Cardiology,Hypertension,Outpatient,4300,4
+P023,2026-04-22,64,Male,Orthopedics,Arthritis,Outpatient,4800,4
+P024,2026-04-27,26,Female,Dermatology,Acne,Outpatient,2100,5
+P025,2026-05-04,57,Male,Cardiology,Heart Disease,Inpatient,14800,4
+P026,2026-05-08,30,Female,Pediatrics,Fever,Outpatient,1550,5
+P027,2026-05-13,46,Male,Neurology,Migraine,Outpatient,3400,4
+P028,2026-05-18,68,Female,Orthopedics,Arthritis,Inpatient,9000,3
+P029,2026-05-23,39,Male,Dermatology,Skin Allergy,Outpatient,2600,4
+P030,2026-05-28,24,Female,Cardiology,Hypertension,Outpatient,4000,5
+P031,2026-06-03,61,Male,Neurology,Parkinsons,Inpatient,13000,3
+P032,2026-06-08,28,Female,Pediatrics,Fever,Outpatient,1650,5
+P033,2026-06-13,50,Male,Orthopedics,Fracture,Inpatient,10800,4
+P034,2026-06-18,34,Female,Dermatology,Acne,Outpatient,2300,5
+P035,2026-06-23,66,Male,Cardiology,Heart Disease,Inpatient,15200,3
+P036,2026-06-28,43,Female,Neurology,Migraine,Outpatient,3300,4
